@@ -11,6 +11,9 @@
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bokor&family=Parkinsans:wght@300..800&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -25,5 +28,6 @@
         {% include 'menu/nav.html.twig' %}
     </footer>
 </div>
+{% block extraStyle %}{% endblock %}
 </body>
 </html>
