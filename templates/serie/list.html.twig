@@ -1,31 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>List of TV show</h1>
+    <h1>List of TV Shows</h1>
 
-    <div class="flex_div flex_between">
+    <div class="pagination">
         {% if currentPage > 1 %}
-        <a href="{{ path('series_list', {'page' : currentPage - 1}) }}"><button>Previous Page</button></a>
-            {% else %}
-            <div></div>
+            <a href="{{ path('series_list', {'page': currentPage - 1}) }}" class="pagination-arrow pagination-arrow-left">
+                &#10094; <!-- Unicode pour une flèche gauche -->
+            </a>
         {% endif %}
         {% if currentPage < maxPage %}
-        <a href="{{ path('series_list', {'page' : currentPage + 1}) }}"><button>Next Page</button></a>
+            <a href="{{ path('series_list', {'page': currentPage + 1}) }}" class="pagination-arrow pagination-arrow-right">
+                &#10095; <!-- Unicode pour une flèche droite -->
+            </a>
         {% endif %}
     </div>
+
     <section class="series-list">
         {% for serie in series %}
-            <article>
+            <article class="serie-card" title="{{ serie.name }} | {{ serie.seasons | length }} seasons">
                 <a href="{{ path('series_detail', {'id': serie.id}) }}">
-                <img src="{{ asset('img/posters/series/' ~ serie.poster) }}" alt="{{ serie.name }}">
+                    <img src="{{ asset('img/posters/series/' ~ serie.poster) }}" alt="{{ serie.name }}">
                 </a>
+                <div class="serie-info">
+                    <h2>{{ serie.name }}</h2>
+                </div>
             </article>
         {% endfor %}
     </section>
-
 {% endblock %}
 
 {% block title %}
     {{ parent() }} | List
 {% endblock %}
-

@@ -16,8 +16,38 @@
                 <div>Aired from : {{ serie.firstAirDate | date('Y-m-d') }}
                     to {{ serie.lastAirDate | date('Y-m-d') }}</div>
                 <div>{{ serie.overview | nl2br }}</div>
+                <div><a href="{{ path('season_add', {'serieId': serie.id}) }}"><button>Add a season</button></a>
+                    <a href="{{ path('series_delete', {'id' : serie.id}) }}">
+                        <button>Supprimer</button>
+                    </a></div>
             </div>
         </article>
+
+        <div>
+            {% for season in serie.seasons %}
+
+                <article class="seasons">
+                    <div>
+                        <img src="{{ asset('img/posters/seasons/' ~ season.poster) }}" alt=" {{ season.serie.name }}">
+                    </div>
+                    <div>
+                        # {{ season.number }}
+                    </div>
+                    <div>
+                        Aired from {{ season.firstAirDate | date('Y-m-d') }}
+                    </div>
+                    <div>
+                        {{ season.overview | nl2br }}
+                    </div>
+                    <div><a href="{{ path('season_edit', {'id' : season.id}) }}">
+                            <button>Update</button>
+                        </a>
+                        <a href="{{ path('season_delete', {'id' : season.id}) }}">
+                            <button>Delete</button>
+                        </a></div>
+                </article>
+            {% endfor %}
+        </div>
     </section>
 
 
@@ -30,7 +60,7 @@
 {% block extraStyle %}
     <style>
         body {
-            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.3)),
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)),
             url("{{ asset('img/backdrops/' ~ serie.backdrop) }}");
         }
     </style>

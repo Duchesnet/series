@@ -79,8 +79,31 @@ nav li {
 
 .series-list {
     display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Colonnes adaptables */
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.serie-card {
+    background-color: #1c1e26; /* Fond sombre pour contraster avec le fond */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+}
+
+.serie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.serie-card img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #333; /* Séparation entre l'image et le texte */
 }
 
 .serie-details {
@@ -149,7 +172,7 @@ textarea{
     margin-bottom: 1rem;
 }
 
-.seasons article img {
+.seasons img {
     max-height: 200px;
     margin-right: 0.6rem;
 }
@@ -157,3 +180,53 @@ textarea{
 .seasons{
     margin-top: 15px;
 }
+
+/* Pagination Arrows */
+.pagination-arrow {
+    position: fixed; /* Fixe les flèches pour qu'elles suivent le scroll */
+    top: 50%; /* Place les flèches au milieu de l'écran verticalement */
+    transform: translateY(-50%); /* Centre parfaitement */
+    font-size: 2.5rem; /* Taille des flèches */
+    color: #FFF;
+    background: linear-gradient(145deg, #0056b3, #007BFF); /* Dégradé moderne */
+    border-radius: 50%; /* Boutons ronds */
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3), inset 0px 4px 8px rgba(255, 255, 255, 0.1); /* Effet 3D */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000; /* Toujours au-dessus des autres éléments */
+}
+
+.pagination-arrow:hover {
+    background: linear-gradient(145deg, #004080, #0056b3); /* Dégradé plus sombre au survol */
+    transform: translateY(-50%) scale(1.1); /* Animation au survol */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5), inset 0px 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Flèche gauche */
+.pagination-arrow-left {
+    left: 10px; /* Position à gauche de l'écran */
+}
+
+/* Flèche droite */
+.pagination-arrow-right {
+    right: 10px; /* Position à droite de l'écran */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pagination-arrow {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+    }
+}
+
+
+
+
+

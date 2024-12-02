@@ -1,0 +1,9 @@
+{% block form_row %}
+    <div class="flash-error">
+        {{ form_errors(form) }}
+    </div>
+    <div class="flex_div">
+        {{ form_label(form) }} {{ form_widget(form) }}
+    </div>
+
+{% endblock %}
