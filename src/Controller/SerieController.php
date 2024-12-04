@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Serie;
 use App\Form\SerieType;
+use App\Helpers\FileUploader;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/series', name: 'series_')]
 class SerieController extends AbstractController
@@ -55,7 +57,7 @@ class SerieController extends AbstractController
 
     #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
     #[Route('/edit/{id}', name: 'edit', methods: ['GET', 'POST'])]
-    public function save(EntityManagerInterface $entityManager, Request $request, int $id = null, SerieRepository $repository): Response
+    public function save(EntityManagerInterface $entityManager, Request $request, SerieRepository $repository, FileUploader $fileUploader, int $id = null): Response
     {
         $serie = !$id ? new Serie() : $entity = $repository->find($id);
 
@@ -74,14 +76,13 @@ class SerieController extends AbstractController
             $serie->setGenres(implode('/', $serieForm->get('genres')->getData()));
             $backdrop = $serieForm->get('backdrop')->getData();
 
+            if($backdrop)
+            {
+                $fileName = $fileUploader->upload($backdrop, $this->getParameter('backdrop_path'), $serie->getName());
 
-            /**
-             * @var UploadedFile $backdrop
-             */
-            $fileName = $serie->getName() . '-' . uniqid() . '.' . $backdrop->guessExtension();
-            $backdrop->move("img/backdrops", $fileName);
+                $serie->setBackdrop($fileName);
+            }
 
-            $serie->setBackdrop($fileName);
 
 
             $entityManager->persist($serie);
@@ -99,6 +100,7 @@ class SerieController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function delete(Serie $serie, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($serie);
