@@ -3,12 +3,17 @@
 namespace App\Helpers;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
 {
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        string $directory,
+        LoggerInterface $logger)
     {
+        $logger->error($directory);
     }
     public function upload(UploadedFile $file, string $directory, string $name = '') : string
     {

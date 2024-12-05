@@ -25,6 +25,18 @@ class MainController extends AbstractController
     #[Route('/test', name: 'main_test')]
     public function test(): Response
     {
+
+        $data = file_get_contents('https://swapi.dev/api/planets/18');
+        dump($data);
+
+//        $curl = curl_init();
+//        curl_setopt($curl, CURLOPT_URL, "https://swapi.dev/api/planets/18");
+//        curl_setopt($curl, CURLOPT_POST);
+//        curl_setopt($curl, CURLOPT_POSTFIELDS, ['key' => 'val']);
+//
+//        curl_exec($curl);
+//        curl_close($curl);
+
         return $this->render('main/test.html.twig');
     }
 

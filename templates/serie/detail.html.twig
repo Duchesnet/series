@@ -10,6 +10,7 @@
             <div class="serie-details-infos">
                 <div>{{ serie.name }}</div>
                 <div>{{ serie.genres }}</div>
+                <div>Like : <span id="serie-nbLike">{{ serie.nbLike }}</span></div>
                 <div>Users rating : {{ serie.vote }}</div>
                 <div>Serie status : {{ serie.status }}</div>
                 <div>Popularity : {{ serie.popularity }}</div>
@@ -17,10 +18,17 @@
                     to {{ serie.lastAirDate | date('Y-m-d') }}</div>
                 <div>{{ serie.overview | nl2br }}</div>
                 {% if app.user %}
-                <div><a href="{{ path('season_add', {'serieId': serie.id}) }}"><button>Add a season</button></a>
-                    <a href="{{ path('series_delete', {'id' : serie.id}) }}">
-                        <button>Supprimer</button>
-                    </a></div>
+                    <div><a href="{{ path('season_add', {'serieId': serie.id}) }}">
+                            <button>Add a season</button>
+                        </a>
+                        <a href="{{ path('series_delete', {'id' : serie.id}) }}">
+                            <button>Supprimer</button>
+                        </a>
+                        <div>
+                            <button class="btn-like" value="1">Like !</button>
+                            <button class="btn-like" value="-1">Dislike !</button>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </article>
@@ -42,12 +50,12 @@
                         {{ season.overview | nl2br }}
                     </div>
                     {% if app.user %}
-                    <div><a href="{{ path('season_edit', {'id' : season.id}) }}">
-                            <button>Update</button>
-                        </a>
-                        <a href="{{ path('season_delete', {'id' : season.id}) }}">
-                            <button>Delete</button>
-                        </a></div>
+                        <div><a href="{{ path('season_edit', {'id' : season.id}) }}">
+                                <button>Update</button>
+                            </a>
+                            <a href="{{ path('season_delete', {'id' : season.id}) }}">
+                                <button>Delete</button>
+                            </a></div>
                     {% endif %}
                 </article>
             {% endfor %}
@@ -68,5 +76,28 @@
             url("{{ asset('img/backdrops/' ~ serie.backdrop) }}");
         }
     </style>
+{% endblock %}
+
+{% block extraJs %}
+    <script>
+        let url = "{{ path('api_serie_update', {'id': serie.id}) }}"
+        let buttons = Array.from(document.querySelectorAll('.btn-like'));
+        let nbLike = parseInt({{ serie.nbLike }})
+
+
+        buttons.forEach(function (val) {
+
+            val.addEventListener('click', function () {
+                console.log(this)
+                let data = {nbLike: nbLike + parseInt(val.value)}
+                fetch(url, {method: 'PUT', body: JSON.stringify(data)})
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('serie-nbLike').innerText = data.nbLike
+                        nbLike = parseInt(data.nbLike)
+                    })
+            })
+        })
+    </script>
 {% endblock %}
 
